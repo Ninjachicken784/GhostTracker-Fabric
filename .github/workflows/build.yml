@@ -17,6 +17,13 @@ jobs:
           gradle-version: 9.5.1
       - name: Build
         run: gradle build --no-daemon
+      - name: Dump API (debug)
+        if: always()
+        run: |
+          J=$(find ~/.gradle -name 'minecraft*.jar' -not -name '*sources*' -size +5M | head -1)
+          echo "jar: $J"
+          javap -cp "$J" net.minecraft.client.gui.components.ChatComponent | grep -i -E "message|add" || true
+          javap -cp "$J" net.minecraft.client.player.LocalPlayer | grep -i -E "message" || true
       - uses: actions/upload-artifact@v4
         with:
           name: GhostTracker-fabric-26.1.2

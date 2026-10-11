@@ -11,7 +11,7 @@ public final class Chat {
     public static void send(String message) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.player == null) return;
-        mc.gui.getChat().addMessage(Component.literal(PREFIX + message));
+        mc.gui.getChat().addClientSystemMessage(Component.literal(PREFIX + message));
     }
 
     public static String stripControlCodes(String s) {
