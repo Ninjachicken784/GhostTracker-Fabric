@@ -30,6 +30,10 @@ public final class GhostConfig {
     /** Reduces text on each line (hides prefixes, adds "/hr" etc.) */
     public boolean abbreviate = false;
     public boolean showMargins = true;
+    /** Start the timed tracker on a kill, pause after 15s without one */
+    public boolean autoTimer = true;
+    /** Big on-screen pop-up when something drops */
+    public boolean dropPopup = true;
     public int lootingLevel = 5;
     public int luckLevel = 7;
     /** 0 = hour, 1 = day, 2 = week */

@@ -54,7 +54,7 @@ public final class WeaponKills {
             int gained = kills - lastKills;
             lastKills = kills;
             // ignore huge jumps (e.g. counter changes from other sources) and kills outside the ghost area
-            if (gained <= 15 && Utils.inGhostArea()) GhostListener.trackKills(gained, 0f);
+            if (gained <= 15 && Utils.inGhostArea()) GhostListener.onWeaponKills(gained);
         } else {
             lastKills = kills;
         }

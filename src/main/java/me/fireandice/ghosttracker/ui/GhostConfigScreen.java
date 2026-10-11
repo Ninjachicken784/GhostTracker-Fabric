@@ -54,6 +54,8 @@ public class GhostConfigScreen extends Screen {
                 toggle("Show icons", () -> c.showIcons, v -> c.showIcons = v);
                 toggle("Abbreviate text", () -> c.abbreviate, v -> c.abbreviate = v);
                 toggle("Show margins", () -> c.showMargins, v -> c.showMargins = v);
+                toggle("Auto start/pause timer", () -> c.autoTimer, v -> c.autoTimer = v);
+                toggle("Drop pop-ups", () -> c.dropPopup, v -> c.dropPopup = v);
                 cycle("Looting level", () -> c.lootingLevel, 0, 10, 1, v -> c.lootingLevel = v, null);
                 cycle("Luck level", () -> c.luckLevel, 0, 10, 1, v -> c.luckLevel = v, null);
                 cycle("Price timespan", () -> c.priceTimespanOption, 0, 2, 1, v -> c.priceTimespanOption = v, SPANS);

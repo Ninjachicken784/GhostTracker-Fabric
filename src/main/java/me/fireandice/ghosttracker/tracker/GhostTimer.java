@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import me.fireandice.ghosttracker.GhostTrackerClient;
+import me.fireandice.ghosttracker.config.GhostConfig;
 import me.fireandice.ghosttracker.utils.Chat;
 
 import java.io.IOException;
@@ -47,6 +48,25 @@ public final class GhostTimer {
         totalTime += System.currentTimeMillis() - startTime;
         isTracking = false;
         if (message) Chat.send("§eSession timer paused");
+    }
+
+    private static long lastKill = -1L;
+
+    /** Called when a ghost kill is tracked: starts the timer if auto mode is on. */
+    public static void onKill() {
+        if (!GhostConfig.INSTANCE.autoTimer) return;
+        lastKill = System.currentTimeMillis();
+        if (!isTracking) start(false);
+    }
+
+    /** Called every tick: pauses 15s after the last kill, not counting the idle time. */
+    public static void autoTick() {
+        if (!GhostConfig.INSTANCE.autoTimer || !isTracking) return;
+        long ref = Math.max(lastKill, startTime);
+        if (System.currentTimeMillis() - ref > 15_000) {
+            totalTime += Math.max(0, ref - startTime);
+            isTracking = false;
+        }
     }
 
     public static void reset(boolean message) {

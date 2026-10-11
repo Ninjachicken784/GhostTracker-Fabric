@@ -23,6 +23,7 @@ public final class HudRenderer {
         GhostConfig c = GhostConfig.INSTANCE;
         Minecraft mc = Minecraft.getInstance();
         if (editing || mc.player == null || mc.options.hideGui) return;
+        DropPopups.render(graphics);
         if (!(c.showEverywhere || ScoreboardUtils.inDwarvenMines)) return;
 
         if (c.trackerEnabled) draw(graphics, HudContent.tracker(), c.trackerX, c.trackerY, c.trackerScale);
