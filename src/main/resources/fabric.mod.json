@@ -1,0 +1,26 @@
+{
+	"schemaVersion": 1,
+	"id": "ghosttracker",
+	"version": "${version}",
+	"name": "GhostTracker",
+	"description": "Tracks ghost kills, drops and profit per hour for Hypixel SkyBlock's Dwarven Mines. Fabric port of llFireAndIcell/GhostTracker.",
+	"authors": [
+		"DanceWithFire aka llFireAndIcell (original mod)"
+	],
+	"contact": {
+		"sources": "https://github.com/llFireAndIcell/GhostTracker"
+	},
+	"license": "See LICENSE",
+	"environment": "client",
+	"entrypoints": {
+		"client": [
+			"me.fireandice.ghosttracker.GhostTrackerClient"
+		]
+	},
+	"depends": {
+		"fabricloader": ">=0.19.5",
+		"minecraft": "~26.1",
+		"java": ">=25",
+		"fabric-api": "*"
+	}
+}
