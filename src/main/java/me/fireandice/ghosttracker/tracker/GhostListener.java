@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 public final class GhostListener {
 
     private static final Pattern RARE_DROP = Pattern.compile(
-        "RARE DROP! (?<drop>[A-Za-z ]+) \\(\\+(?<mf>\\d+)% ✯ Magic Find\\)");
+        "RARE DROP! (?<drop>[A-Za-z ]+) \\(\\+(?<mf>\\d+)%? \\S+ Magic Find\\)");
     private static final Pattern COIN_DROP = Pattern.compile(
         "The ghost.s death materialized 1,000,000 coins from the mists!");
     private static final Pattern COMBAT_XP = Pattern.compile(
@@ -29,14 +29,14 @@ public final class GhostListener {
         Minecraft mc = Minecraft.getInstance();
         if (!ScoreboardUtils.inDwarvenMines || mc.player == null || mc.player.getY() > 100) return;
 
-        if (COIN_DROP.matcher(message).matches()) {
+        if (COIN_DROP.matcher(message).find()) {
             GhostTrackerClient.ghostStats.coinsCount++;
             if (GhostTimer.isTracking) GhostTimer.stats.coinsCount++;
             return;
         }
 
         Matcher m = RARE_DROP.matcher(message);
-        if (m.matches()) {
+        if (m.find()) {
             GhostDrops drop = GhostDrops.byName(m.group("drop"));
             if (drop == null) return;
             trackDrops(drop, Integer.parseInt(m.group("mf")));
@@ -69,14 +69,14 @@ public final class GhostListener {
         }
 
         if (previousXp == -1f) { // no previously tracked kills
-            trackKills(1, xpGained);
+            trackKills(WeaponKills.active ? 0 : 1, xpGained);
         } else {
             float actualXpGained = newXp - previousXp;
             // gaining a bestiary level / 1m xp might count as lots of kills, hence the cap (15 was arbitrary)
             int killsGained = Math.min(Math.round(actualXpGained / xpGained), 15);
 
             // xpGained * killsGained is more accurate and avoids rounding error
-            if (previousXp != 0f && killsGained >= 0) trackKills(killsGained, xpGained * killsGained);
+            if (previousXp != 0f && killsGained >= 0) trackKills(WeaponKills.active ? 0 : killsGained, xpGained * killsGained);
         }
         previousXp = newXp;
     }
@@ -99,7 +99,7 @@ public final class GhostListener {
         stats.mfDropCount++;
     }
 
-    private static void trackKills(int killsGained, float xpGained) {
+    static void trackKills(int killsGained, float xpGained) {
         GhostTrackerClient.ghostStats.kills += killsGained;
         GhostTrackerClient.ghostStats.totalXp += xpGained;
         if (GhostTimer.isTracking) {

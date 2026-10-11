@@ -102,6 +102,7 @@ public class GhostTrackerClient implements ClientModInitializer {
 
         ScoreboardUtils.checkLocations();
         PurseListener.onTick();
+        me.fireandice.ghosttracker.tracker.WeaponKills.onTick();
 
         long now = System.currentTimeMillis();
         if (lastSave == -1L || now - lastSave > 300_000) {
