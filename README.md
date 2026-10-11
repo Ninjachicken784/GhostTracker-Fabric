@@ -17,6 +17,7 @@ Needs the Fabric API mod at runtime. Versions are in `gradle.properties` (check 
 
 ## Commands
 - `/ghost` - config screen
+- `/ghost move` - drag the HUDs with the mouse (scroll to resize)
 - `/ghost start | pause | reset` - timed tracker
 - `/ghost stats reset` - reset the total tracker
 - `/ghost hud <tracker|timer> toggle | pos <x> <y> | scale <n>`

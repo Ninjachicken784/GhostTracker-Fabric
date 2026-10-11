@@ -15,18 +15,21 @@ import java.util.List;
  */
 public final class HudRenderer {
 
+    /** True while the HUD editor screen is open (it draws the HUDs itself). */
+    public static boolean editing = false;
+
     /** Registered as a Fabric HudElement (see GhostTrackerClient). */
     public static void render(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker) {
         GhostConfig c = GhostConfig.INSTANCE;
         Minecraft mc = Minecraft.getInstance();
-        if (mc.player == null || mc.options.hideGui) return;
+        if (editing || mc.player == null || mc.options.hideGui) return;
         if (!(c.showEverywhere || ScoreboardUtils.inDwarvenMines)) return;
 
         if (c.trackerEnabled) draw(graphics, HudContent.tracker(), c.trackerX, c.trackerY, c.trackerScale);
         if (c.timerEnabled) draw(graphics, HudContent.timer(), c.timerX, c.timerY, c.timerScale);
     }
 
-    private static void draw(GuiGraphicsExtractor g, List<HudLine> lines, int x, int y, float scale) {
+    public static void draw(GuiGraphicsExtractor g, List<HudLine> lines, int x, int y, float scale) {
         if (lines.isEmpty()) return;
         GhostConfig c = GhostConfig.INSTANCE;
         Font font = Minecraft.getInstance().font;
@@ -57,6 +60,19 @@ public final class HudRenderer {
             lineY += font.lineHeight;
         }
         g.pose().popMatrix();
+    }
+
+    /** Pixel size of a HUD on screen: {width, height}. */
+    public static int[] size(List<HudLine> lines, float scale) {
+        GhostConfig c = GhostConfig.INSTANCE;
+        Font font = Minecraft.getInstance().font;
+        int w = 0;
+        for (HudLine l : lines) {
+            int lw = (c.showIcons ? 10 : 0) + (c.showPrefixes() ? font.width(l.prefix()) : 0)
+                + font.width(l.main()) + font.width(l.suffix());
+            w = Math.max(w, lw);
+        }
+        return new int[]{Math.max(20, Math.round(w * scale)), Math.max(10, Math.round(lines.size() * font.lineHeight * scale))};
     }
 
     private HudRenderer() {

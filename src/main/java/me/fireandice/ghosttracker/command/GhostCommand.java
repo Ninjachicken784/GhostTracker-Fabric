@@ -25,6 +25,10 @@ public final class GhostCommand {
             GhostTrackerClient.openConfig();
             return 1;
         }));
+        root.then(ClientCommands.literal("move").executes(ctx -> {
+            GhostTrackerClient.openHudEditor();
+            return 1;
+        }));
         root.then(ClientCommands.literal("start").executes(ctx -> {
             GhostTimer.start(true);
             return 1;
@@ -118,6 +122,7 @@ public final class GhostCommand {
 
         root.then(ClientCommands.literal("help").executes(ctx -> {
             Chat.send("§7/ghost §f- config screen");
+            Chat.send("§7/ghost move §f- drag HUDs to move/resize them");
             Chat.send("§7/ghost <start|pause|reset> §f- timed tracker");
             Chat.send("§7/ghost stats reset §f- reset the total tracker");
             Chat.send("§7/ghost hud <tracker|timer> <toggle | pos <x> <y> | scale <n>>");

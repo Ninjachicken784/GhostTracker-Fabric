@@ -58,6 +58,10 @@ public class GhostConfigScreen extends Screen {
                 cycle("Luck level", () -> c.luckLevel, 0, 10, 1, v -> c.luckLevel = v, null);
                 cycle("Price timespan", () -> c.priceTimespanOption, 0, 2, 1, v -> c.priceTimespanOption = v, SPANS);
                 cycle("Price fetch (min)", () -> c.priceFrequency, 5, 120, 5, v -> c.priceFrequency = v, null);
+                addRenderableWidget(Button.builder(Component.literal("§bMove HUDs..."),
+                        btn -> this.minecraft.setScreen(new HudEditorScreen(this)))
+                    .bounds(nextX(), nextY(), 150, 20).build());
+                slot++;
             }
             case 1 -> {
                 toggle("Tracker HUD", () -> c.trackerEnabled, v -> c.trackerEnabled = v);

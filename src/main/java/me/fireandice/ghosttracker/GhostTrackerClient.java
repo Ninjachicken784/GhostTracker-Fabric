@@ -44,6 +44,7 @@ public class GhostTrackerClient implements ClientModInitializer {
     private static Path statsFile;
 
     private static boolean openConfigNextTick = false;
+    private static boolean openEditorNextTick = false;
     private static Object lastLevel = null;
     private static long lastSave = -1L;
 
@@ -88,6 +89,11 @@ public class GhostTrackerClient implements ClientModInitializer {
             mc.setScreen(new GhostConfigScreen(mc.screen));
         }
 
+        if (openEditorNextTick) {
+            openEditorNextTick = false;
+            mc.setScreen(new me.fireandice.ghosttracker.ui.HudEditorScreen(mc.screen));
+        }
+
         // the 1.8.9 version paused on WorldEvent.Unload; this is the equivalent (new level object = world change)
         if (mc.level != lastLevel) {
             if (lastLevel != null) GhostTimer.pause(false);
@@ -110,6 +116,10 @@ public class GhostTrackerClient implements ClientModInitializer {
     /** Commands run while chat is open, so the screen has to be opened on the next tick. */
     public static void openConfig() {
         openConfigNextTick = true;
+    }
+
+    public static void openHudEditor() {
+        openEditorNextTick = true;
     }
 
     public static void resetStats(boolean message) {
